@@ -24,6 +24,7 @@
 ---
 
 ## 2. Cấu trúc thư mục
+```
 NLP/
 ├── src/
 │ ├── core/
@@ -42,6 +43,7 @@ NLP/
 ├── UD_English-EWT/ # Dữ liệu (CoNLL-U)
 │ └── en_ewt-ud-train.conllu
 └── README.md
+```
 
 ---
 
@@ -78,6 +80,7 @@ python -m test.lab1_test1
 👉 Tokenizer đã tách từ và dấu câu riêng biệt. 
 
 ### Lab 1. Task 2 — So sánh SimpleTokenizer vs RegexTokenizer
+```
 Sentence: Hello, world! This is a test.
 SimpleTokenizer: ['hello', ',', 'world', '!', 'this', 'is', 'a', 'test', '.']
 RegexTokenizer:   ['hello', ',', 'world', '!', 'this', 'is', 'a', 'test', '.']
@@ -89,7 +92,7 @@ RegexTokenizer:   ['nlp', 'is', 'fascinating', '.', '.', '.', 'isn', "'", 't', '
 Sentence: Let's see how it handles 123 numbers and punctuation!
 SimpleTokenizer: ["let's", 'see', 'how', 'it', 'handles', '123', 'numbers', 'and', 'punctuation', '!']
 RegexTokenizer:   ['let', "'", 's', 'see', 'how', 'it', 'handles', '123', 'numbers', 'and', 'punctuation', '!']
-
+```
 
 👉 Nhận xét:
 
@@ -100,11 +103,12 @@ Với câu chứa dấu nháy ('), RegexTokenizer chi tiết hơn: "isn't" → [
 Điều này phù hợp cho xử lý NLP chuyên sâu (POS tagging, lemmatization).
 
 ### Lab 1. Task 3 — UD Dataset Sample
+```
 --- Tokenizing Sample Text from UD_English-EWT ---
 Original Sample: From the AP comes this story : President Bush ...
 SimpleTokenizer Output (first 20 tokens): ['from', 'the', 'ap', 'comes', 'this', 'story', ':', 'president', 'bush', 'on', 'tuesday', 'nominated', 'two', 'individuals', 'to', 'replace', 'retiring', 'jurists', 'on', 'federal']
 RegexTokenizer Output (first 20 tokens):  ['from', 'the', 'ap', 'comes', 'this', 'story', ':', 'president', 'bush', 'on', 'tuesday', 'nominated', 'two', 'individuals', 'to', 'replace', 'retiring', 'jurists', 'on', 'federal']
-
+```
 
 👉 Nhận xét:
 
@@ -113,7 +117,7 @@ Trên dữ liệu thực, 2 tokenizer cho kết quả tương đồng ở 20 tok
 RegexTokenizer vẫn có lợi thế ở các câu chứa ký tự đặc biệt phức tạp.
 
 ### Lab 2 — CountVectorizer
-
+```
 Corpus:
 
 I love NLP.
@@ -140,7 +144,7 @@ Document-Term Matrix:
 [1, 0, 0, 1, 0, 1, 1, 0, 0, 0]
 [1, 0, 0, 1, 0, 1, 0, 0, 1, 0]
 [1, 1, 1, 0, 1, 0, 1, 1, 0, 1]
-
+```
 
 👉 Nhận xét:
 
@@ -149,7 +153,7 @@ Vector biểu diễn tần suất token.
 Ví dụ: câu I love NLP. có i=1, love=1, nlp=1.
 
 UD Dataset Sample (rút gọn):
-
+```
 Vocabulary (trích):
 
 *: 0
@@ -171,7 +175,7 @@ Document-Term Matrix (3 dòng đầu, rút gọn):
 [3, 1, 1, 3, 1, 0, 0, 2, ...]
 [0, 1, 3, 2, 0, 1, 0, 1, ...]
 
-
+```
 👉 Nhận xét:
 
 Vocabulary lớn, phản ánh tính đa dạng của dữ liệu thật.
