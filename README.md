@@ -29,7 +29,7 @@ NLP/
 ├── src/
 │ ├── core/
 │ │ ├── interfaces.py # Interface: Tokenizer, Vectorizer
-| | └──dataset_loader.py
+| | └── dataset_loader.py
 │ ├── preprocessing/
 │ │ ├── simple_tokenizer.py # Tokenizer đơn giản (split)
 │ │ └── regex_tokenizer.py # Tokenizer dùng regex
@@ -77,7 +77,7 @@ python -m test.lab1_test1
 ['hello', ',', 'world', '!', 'this', 'is', 'a', 'test', '.']
 
 
-👉 Tokenizer đã tách từ và dấu câu riêng biệt. 
+Tokenizer đã tách từ và dấu câu riêng biệt. 
 
 ### Lab 1. Task 2 — So sánh SimpleTokenizer vs RegexTokenizer
 ```
@@ -94,7 +94,7 @@ SimpleTokenizer: ["let's", 'see', 'how', 'it', 'handles', '123', 'numbers', 'and
 RegexTokenizer:   ['let', "'", 's', 'see', 'how', 'it', 'handles', '123', 'numbers', 'and', 'punctuation', '!']
 ```
 
-👉 Nhận xét:
+Nhận xét:
 
 Với câu đơn giản, 2 tokenizer cho kết quả giống nhau.
 
@@ -110,7 +110,7 @@ SimpleTokenizer Output (first 20 tokens): ['from', 'the', 'ap', 'comes', 'this',
 RegexTokenizer Output (first 20 tokens):  ['from', 'the', 'ap', 'comes', 'this', 'story', ':', 'president', 'bush', 'on', 'tuesday', 'nominated', 'two', 'individuals', 'to', 'replace', 'retiring', 'jurists', 'on', 'federal']
 ```
 
-👉 Nhận xét:
+Nhận xét:
 
 Trên dữ liệu thực, 2 tokenizer cho kết quả tương đồng ở 20 token đầu.
 
@@ -146,7 +146,7 @@ Document-Term Matrix:
 [1, 1, 1, 0, 1, 0, 1, 1, 0, 1]
 ```
 
-👉 Nhận xét:
+ Nhận xét:
 
 Vector biểu diễn tần suất token.
 
@@ -176,7 +176,7 @@ Document-Term Matrix (3 dòng đầu, rút gọn):
 [0, 1, 3, 2, 0, 1, 0, 1, ...]
 
 ```
-👉 Nhận xét:
+Nhận xét:
 
 Vocabulary lớn, phản ánh tính đa dạng của dữ liệu thật.
 
