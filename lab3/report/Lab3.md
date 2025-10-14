@@ -189,6 +189,14 @@ Demo sử dụng mô hình Word2Vec đã huấn luyện:
       1. science: 0.4967
       2. canada,: 0.4903
       3. buy: 0.4637
+      4. core: 0.4627
+      5. brief: 0.4625
+      6. unlimited: 0.4568
+      7. parent: 0.4512
+      8. reports,: 0.4425
+      9. visa: 0.4393
+      10. agel: 0.4387
+
       ...
    B. Giải quyết bài toán tương tự: king - man + woman = ?
       Kết quả (Top 3):
@@ -252,7 +260,7 @@ Kết quả king vs queen ≈ 0.78 và most_similar cho computer đều rất h�
 
 Nhược điểm: không domain-specific; nếu dữ liệu của bạn khác biệt (ví dụ văn bản y tế/tài chính), pretrained có thể không phản ánh tốt thuật ngữ chuyên ngành.
 
-### 5.2 Word2Vec tự huấn luyện trên en_ewt — vì sao kết quả “kỳ lạ”?
+### 5.2 Word2Vec tự huấn luyện trên en_ewt
 
 Quan sát: phép analogies king - man + woman cho kết quả như arabia, foot, "it hoặc easily (trong một lần khác) — không phải queen. Nguyên nhân chính:
 
@@ -337,4 +345,4 @@ Tăng/đổi tham số huấn luyện: giảm min_count, tăng epochs (nếu d�
 
 Dùng corpus lớn hơn: text8 (sẵn có), Wikipedia (tải via gensim.downloader) → huấn luyện sẽ cho analogies tốt.
 
-Định lượng: ngoài trực quan, thực hiện đánh giá định lượng như intrinsic evaluation (word similarity datasets) nếu cầ
+Định lượng: ngoài trực quan, thực hiện đánh giá định lượng như intrinsic evaluation (word similarity datasets) nếu cần.
