@@ -1,9 +1,9 @@
-Lab3 — Word Embeddings (Lab Report)
+# Lab3 — Word Embeddings (Lab Report)
 
 Mục tiêu: Thực hiện các thao tác với word embeddings: sử dụng pretrained embedding (GloVe), huấn luyện Word2Vec từ dữ liệu nhỏ (Gensim) và lớn (Spark), tạo document embedding, giảm chiều & trực quan hóa, và phân tích kết quả.
-Tài liệu này là Lab3.md để nộp/đính kèm cùng mã nguồn và file PDF (notebook) — chứa hướng dẫn chạy, kết quả quan trọng, phân tích, nhận xét và các vấn đề/giải pháp.
 
-Mục lục
+
+## Mục lục
 
 1. Tóm tắt tiến độ (Checklist)
 
@@ -35,7 +35,7 @@ Mục lục
 
 8. Tài liệu tham khảo & nguồn
 
-1. Tóm tắt tiến độ (Checklist)
+## 1. Tóm tắt tiến độ (Checklist)
 
 Phần 1: Triển khai (50%)
 
@@ -67,17 +67,14 @@ Phần 2: Báo cáo và Phân tích (50%)
 
  Nhận xét về similarity / most_similar (pretrained) — có.
 
- Phân tích trực quan hóa — chưa (do Task 5 chưa làm).
+ Phân tích trực quan hóa — có (Trong file PDF)
 
  So sánh pretrained vs tự huấn luyện — có.
 
  Khó khăn & giải pháp — có.
 
- Trích dẫn tài liệu — có.
 
-Tóm tắt điểm: hiện tại bạn đã hoàn thành đa phần phần triển khai (Spark, Gensim, pretrained) và phân tích văn bản — phần trực quan hóa (PCA / t-SNE biểu đồ) là phần còn thiếu để hoàn thiện 100%.
-
-2. Môi trường & Cài đặt
+## 2. Môi trường & Cài đặt
 
 Khuyến nghị môi trường (venv):
 
@@ -85,8 +82,9 @@ Python 3.10
 
 Virtual environment (ví dụ venv) — bạn đang dùng (venv).
 
-requirements.txt (gợi ý):
+Thêm vào ```requirements.txt``` các thư viện sau:
 
+```bash
 gensim
 nltk
 numpy==1.26.4
@@ -94,54 +92,113 @@ scipy==1.11.4
 matplotlib
 scikit-learn
 pyspark
+```
 
-
-Lưu ý: đã từng gặp xung đột numpy vs thinc — trong lab này phiên bản numpy==1.26.4 + scipy==1.11.4 hoạt động ổn với gensim. Nếu bạn cài spacy/thinc có thể xuất cảnh báo tương thích — không gây lỗi cho các tác vụ hiện tại.
+Lưu ý: đã từng gặp xung đột numpy vs thinc — trong lab này phiên bản numpy==1.26.4 + scipy==1.11.4 hoạt động ổn với gensim. Nếu bạn cài spacy/thinc có thể xuất cảnh báo tương thích, không gây lỗi cho các tác vụ hiện tại.
 
 NLTK: cần download punkt để tokenize:
-
+```bash
 import nltk
 nltk.download('punkt')
-
-3. Hướng dẫn chạy (How to run)
+```
+## 3. Hướng dẫn chạy (How to run)
 
 Kích hoạt môi trường ảo:
 
-# Windows PowerShell
+Windows PowerShell
+```bash
 .\venv\Scripts\Activate.ps1
-# hoặc cmd:
+```
+hoặc cmd:
+```bash
 .\venv\Scripts\activate.bat
-
+```
 
 Cài đặt dependencies:
-
+```bash
 pip install -r requirements.txt
-
+```
 
 Chạy các script:
 
 Spark Word2Vec demo:
-
+```bash
 python test/lab4_spark_word2vec_demo.py
-
+```
 
 Sử dụng pretrained GloVe và test các hàm:
-
+```bash
 python test/lab4_test.py
-
+```
 
 Huấn luyện Word2Vec từ en_ewt:
-
+```bash
 python test/lab4_embedding_training_demo.py
+```
+
+## 4. Nội dung thực thi & kết quả chính (Outputs)
+
+Dưới đây là các output đã chạy:
+### 4.1 Sử dụng GloVe pretrained (lab4_test)
+[nltk_data] Downloading package punkt...
+🔹 Đang tải mô hình 'glove-wiki-gigaword-50' ...
+ Mô hình 'glove-wiki-gigaword-50' tải thành công (50-dim).
+
+--- 🔹 Lấy vector của từ 'king' ---
+Kích thước vector: (50,)
+Giá trị đầu tiên: [ 0.50451   0.68607 -0.59517 -0.022801  0.60046 ]        
+
+--- 🔹 Độ tương đồng ---
+king vs queen: 0.78390425
+king vs man: 0.53093773
+
+--- 🔹 10 từ gần nghĩa với 'computer' ---
+computers       -> 0.9165
+software        -> 0.8815
+technology      -> 0.8526
+electronic      -> 0.8126
+internet        -> 0.8060
+computing       -> 0.8026
+devices         -> 0.8016
+digital         -> 0.7992
+applications    -> 0.7913
+pc              -> 0.7883
+
+--- 🔹 Vector văn bản ---
+Vector biểu diễn văn bản:
+[ 0.04564168  0.36530998 -0.55974334  0.04014383  0.09655549  0.15623933
+ -0.33622834 -0.12495166 -0.01031508 -0.5006717 ]
+Độ dài vector: 50
+
+### 4.2 Huấn luyện Word2Vec từ đầu (lab4_embedding_training_demo) — kết quả sample
+BẮT ĐẦU: HUẤN LUYỆN MÔ HÌNH WORD2VEC TỪ ĐẦU
+...
+Tổng số câu được đọc để huấn luyện: 14225
+...
+Word2Vec lifecycle event {... vocab=3866, vector_size=100 ...}
+Huấn luyện mô hình Word2Vec hoàn tất.
+Kích thước từ vựng mô hình (vocab size): 3866
+
+3. Đang lưu mô hình đã huấn luyện tại: .../results/word2vec_ewt.model
+Lưu mô hình thành công.
+
+4. Demo sử dụng mô hình Word2Vec đã huấn luyện:
+
+   A. 10 từ tương đồng nhất với 'student':
+      1. science: 0.4967
+      2. canada,: 0.4903
+      3. buy: 0.4637
+      ...
+   B. Giải quyết bài toán tương tự: king - man + woman = ?
+      Kết quả (Top 3):
+      1. arabia (Score: 0.4022)
+      2. foot (Score: 0.3916)
+      3. "it (Score: 0.3914)
 
 
-(Tùy chọn) Mở notebook Lab3.ipynb, chạy hết các cell → File → Export as PDF để nộp.
+Ghi chú: kết quả analogies sai là do hạn chế tập huấn luyện (xem phần phân tích).
 
-4. Nội dung thực thi & kết quả chính (Outputs)
-
-Dưới đây là các output bạn đã chạy và copy vào báo cáo — giữ nguyên để giảng viên kiểm tra.
-
-4.1 Spark Word2Vec demo (kết quả)
+### 4.3 Spark Word2Vec demo (kết quả)
 Khởi tạo SparkSession.
 ...
 ----------
@@ -180,67 +237,10 @@ Tìm các từ tương tự 'computer'
 Hoàn thành huấn luyện Spark Word2Vec
 ...
 
-4.2 Sử dụng GloVe pretrained (lab4_test)
-[nltk_data] Downloading package punkt...
-🔹 Đang tải mô hình 'glove-wiki-gigaword-50' ...
- Mô hình 'glove-wiki-gigaword-50' tải thành công (50-dim).
-
---- 🔹 Lấy vector của từ 'king' ---
-Kích thước vector: (50,)
-Giá trị đầu tiên: [ 0.50451   0.68607 -0.59517 -0.022801  0.60046 ]        
-
---- 🔹 Độ tương đồng ---
-king vs queen: 0.78390425
-king vs man: 0.53093773
-
---- 🔹 10 từ gần nghĩa với 'computer' ---
-computers       -> 0.9165
-software        -> 0.8815
-technology      -> 0.8526
-electronic      -> 0.8126
-internet        -> 0.8060
-computing       -> 0.8026
-devices         -> 0.8016
-digital         -> 0.7992
-applications    -> 0.7913
-pc              -> 0.7883
-
---- 🔹 Vector văn bản ---
-Vector biểu diễn văn bản:
-[ 0.04564168  0.36530998 -0.55974334  0.04014383  0.09655549  0.15623933
- -0.33622834 -0.12495166 -0.01031508 -0.5006717 ]
-Độ dài vector: 50
-
-4.3 Huấn luyện Word2Vec từ đầu (lab4_embedding_training_demo) — kết quả sample
-BẮT ĐẦU: HUẤN LUYỆN MÔ HÌNH WORD2VEC TỪ ĐẦU
-...
-Tổng số câu được đọc để huấn luyện: 14225
-...
-Word2Vec lifecycle event {... vocab=3866, vector_size=100 ...}
-Huấn luyện mô hình Word2Vec hoàn tất.
-Kích thước từ vựng mô hình (vocab size): 3866
-
-3. Đang lưu mô hình đã huấn luyện tại: .../results/word2vec_ewt.model
-Lưu mô hình thành công.
-
-4. Demo sử dụng mô hình Word2Vec đã huấn luyện:
-
-   A. 10 từ tương đồng nhất với 'student':
-      1. science: 0.4967
-      2. canada,: 0.4903
-      3. buy: 0.4637
-      ...
-   B. Giải quyết bài toán tương tự: king - man + woman = ?
-      Kết quả (Top 3):
-      1. arabia (Score: 0.4022)
-      2. foot (Score: 0.3916)
-      3. "it (Score: 0.3914)
 
 
-Ghi chú: kết quả analogies sai là do hạn chế tập huấn luyện (xem phần phân tích).
-
-5. Phân tích & Nhận xét chi tiết (Phần Quan trọng)
-5.1 Pretrained GloVe — chất lượng & nhận xét
+## 5. Phân tích & Nhận xét chi tiết (Phần Quan trọng)
+### 5.1 Pretrained GloVe — chất lượng & nhận xét
 
 glove-wiki-gigaword-50 là embedding tiền huấn luyện trên corpora lớn (Wikipedia + Gigaword).
 
@@ -250,7 +250,7 @@ Kết quả king vs queen ≈ 0.78 và most_similar cho computer đều rất h�
 
 Nhược điểm: không domain-specific; nếu dữ liệu của bạn khác biệt (ví dụ văn bản y tế/tài chính), pretrained có thể không phản ánh tốt thuật ngữ chuyên ngành.
 
-5.2 Word2Vec tự huấn luyện trên en_ewt — vì sao kết quả “kỳ lạ”?
+### 5.2 Word2Vec tự huấn luyện trên en_ewt — vì sao kết quả “kỳ lạ”?
 
 Quan sát: phép analogies king - man + woman cho kết quả như arabia, foot, "it hoặc easily (trong một lần khác) — không phải queen. Nguyên nhân chính:
 
@@ -270,27 +270,28 @@ Thuật toán & siêu tham số: epochs, window, vector_size ảnh hưởng mạ
 
 Hệ quả: mô hình học được mối quan hệ cục bộ/đồng xuất hiện (co-occurrence) chứ chưa học được quy luật ngữ nghĩa sâu.
 
-5.3 So sánh: Pretrained vs Trained-from-scratch
-Tiêu chí	Pretrained (GloVe)	Trained-from-scratch (EWT)
-Dữ liệu huấn luyện	Rất lớn	Nhỏ (~17k câu)
-Chất lượng analogies	Tốt (king→queen)	Kém / noisy
-Phù hợp domain	Chung chung	Có thể domain-specific (nếu corpus domain-specific)
-Thời gian	Tải nhanh, không cần train	Cần thời gian train
-Khi nào dùng	Baseline, nhanh	Khi cần embedding chuyên ngành
+### 5.3 So sánh: Pretrained vs Trained-from-scratch
+Tiêu chí	        |  Pretrained (GloVe)	     |  Trained-from-scratch (EWT)
+____________________|____________________________|_______________________
+Dữ liệu huấn luyện	|   Rất lớn	                 |   Nhỏ (~17k câu)
+Chất lượng analogies|	Tốt (king→queen)	     |  Kém / noisy
+Phù hợp domain	    |   Chung chung	             |Có thể domain-specific (nếu corpus domain-specific)
+Thời gian	        |  Tải nhanh, không cần train|	Cần thời gian train
+Khi nào dùng	    |   Baseline, nhanh	         |   Khi cần embedding chuyên ngành
 
 Kết luận: Với dữ liệu nhỏ, dùng pretrained để làm baseline; tự huấn luyện chỉ thực sự hiệu quả nếu có corpus đủ lớn hoặc domain-specific.
 
-5.4 Giảm chiều & trực quan hóa — phương pháp và lời khuyên
+### 5.4 Giảm chiều & trực quan hóa
 
 PCA: nhanh, tuyến tính — dùng để có cái nhìn tổng quan.
 
 t-SNE / UMAP: tách cụm tốt hơn, phù hợp cho visual analysis.
 
-Lưu ý thực thi: chuyển list vectors → numpy.array trước khi cho vào t-SNE; chọn perplexity phù hợp (5–50), thử nhiều lần; chú ý nhãn hơi rối nếu vẽ quá nhiều từ (chọn 100–200 từ phổ biến).
+Nhận xét, đánh giá cụ thể hơn trong  file PDF ```22001286_NguyenThiPhuongThao_Lab3_Phan1```.
 
-Việc chưa làm: trực quan hóa PCA/t-SNE hiện chưa được thực thi trong code của bạn — để hoàn thiện báo cáo, cần thêm cell chạy PCA + t-SNE và chèn hình vào PDF.
 
-6. Các vấn đề gặp phải & cách giải quyết (Troubleshooting)
+
+## 6. Các vấn đề gặp phải & cách giải quyết (Troubleshooting)
 A. ImportError do SciPy / NumPy
 
 Lỗi: ImportError: cannot import name 'triu' from 'scipy.linalg'
@@ -319,11 +320,8 @@ Nguyên nhân: dữ liệu nhỏ / min_count loại bỏ từ / thiếu ngữ c�
 
 Giải pháp: dùng corpus lớn hơn (text8, wikipedia) hoặc giảm min_count, tăng epochs, tăng window, hoặc dùng pretrained.
 
-7. Đề xuất cải tiến & bước tiếp theo
+## 7. Đề xuất cải tiến & bước tiếp theo
 
-Hoàn thiện phần trực quan hóa (PCA + t-SNE/UMAP):
-
-Chọn ~200 từ phổ biến, chạy PCA và t-SNE, lưu hình PNG vào notebook/PDF.
 
 So sánh kỹ hơn pretrained vs trained-from-scratch:
 
