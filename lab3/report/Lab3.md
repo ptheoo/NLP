@@ -1,4 +1,3 @@
-ChatGPT said:
 Lab3 — Word Embeddings (Lab Report)
 
 Mục tiêu: Thực hiện các thao tác với word embeddings: sử dụng pretrained embedding (GloVe), huấn luyện Word2Vec từ dữ liệu nhỏ (Gensim) và lớn (Spark), tạo document embedding, giảm chiều & trực quan hóa, và phân tích kết quả.
