@@ -1,132 +1,95 @@
 import gensim.downloader as api
 import numpy as np
-from typing import List, Optional, Tuple
+from typing import List, Tuple, Optional
 
-# --- Giả định về Tokenizer từ Lab 1 (Bạn hãy thay thế bằng code thực tế của mình) ---
+# --- Hàm Tokenizer đơn giản (Thay thế cho Lab 1) ---
 def simple_tokenizer(document: str) -> List[str]:
-    """Tách văn bản thành các từ và chuyển về chữ thường."""
-    # Loại bỏ dấu câu và tách theo khoảng trắng
-    import re
-    tokens = re.findall(r'\b\w+\b', document.lower())
-    return tokens
-# -----------------------------------------------------------------------------------
+    """
+    Một hàm tokenizer đơn giản: chuyển văn bản sang chữ thường và tách bằng khoảng trắng.
+    """
+    if not document:
+        return []
+    # Loại bỏ các dấu chấm câu đơn giản và chuyển thành chữ thường, sau đó tách
+    cleaned_doc = document.lower().replace('.', '').replace(',', '').strip()
+    return cleaned_doc.split()
+# ---------------------------------------------
+
 
 class WordEmbedder:
     """
-    Class để tải và khám phá các mô hình Word Embedding của Gensim.
+    Tải mô hình nhúng từ (word embedding) được đào tạo trước và cung cấp các phương thức
+    để truy xuất vector, tính toán độ tương đồng và nhúng tài liệu.
     """
     def __init__(self, model_name: str):
         """
-        Tải mô hình word embedding được chỉ định (e.g., 'glove-wiki-gigaword-50').
+        Tải mô hình được chỉ định từ kho dữ liệu của gensim.
         """
-        print(f"Đang tải mô hình: {model_name}...")
-        try:
-            # Model sẽ được lưu trong thuộc tính self.model
-            self.model = api.load(model_name)
-            print("Đã tải mô hình thành công.")
-        except Exception as e:
-            print(f"Lỗi khi tải mô hình {model_name}: {e}")
-            self.model = None
+        print(f"Đang tải mô hình nhúng từ: {model_name}...")
+        # Tải mô hình KeyedVectors
+        self.model = api.load(model_name)
+        print("Tải mô hình thành công.")
+        # Lấy chiều kích thước của vector
+        self.vector_dim = self.model.vector_size
 
     def get_vector(self, word: str) -> Optional[np.ndarray]:
         """
-        Trả về vector embedding cho một từ.
-        Trả về None nếu từ không có trong từ vựng (OOV).
+        Trả về vector nhúng cho một từ đã cho.
+        Trả về None cho các từ nằm ngoài từ vựng (OOV - Out-of-Vocabulary).
         """
-        if self.model is None:
-            return None
-
-        # Chuyển từ về chữ thường vì GloVe thường là case-sensitive
-        word_lower = word.lower()
         try:
-            # Truy cập trực tiếp vào mô hình hoạt động như một dictionary
-            return self.model[word_lower]
+            return self.model[word]
         except KeyError:
-            # Xử lý trường hợp Out-of-Vocabulary (OOV)
+            # Xử lý các từ OOV
             return None
 
-    def get_similarity(self, word1: str, word2: str) -> Optional[float]:
+    def get_similarity(self, word1: str, word2: str) -> float:
         """
-        Trả về độ tương đồng cosine giữa hai từ.
-        Trả về None nếu một trong hai từ là OOV.
+        Trả về độ tương đồng cosine giữa các vector của hai từ.
         """
-        if self.model is None:
-            return None
-
-        # Gensim Word2VecKeyedVectors có sẵn phương thức similarity
-        word1_lower = word1.lower()
-        word2_lower = word2.lower()
-        
-        # Kiểm tra OOV trước để tránh ngoại lệ
-        if word1_lower not in self.model or word2_lower not in self.model:
-             # Bạn có thể trả về một giá trị mặc định, nhưng None thì rõ ràng hơn
-             return None
-
         try:
-            return self.model.similarity(word1_lower, word2_lower)
+            return self.model.similarity(word1, word2)
         except KeyError:
-            # Trường hợp lý thuyết, nhưng đã kiểm tra ở trên
-            return None 
+            # Xử lý trường hợp một hoặc cả hai từ là OOV
+            print(f"Cảnh báo: Một hoặc cả hai từ ('{word1}', '{word2}') không có trong từ vựng. Trả về 0.0.")
+            return 0.0
 
-    def get_most_similar(self, word: str, top_n: int = 10) -> Optional[List[Tuple[str, float]]]:
+    def get_most_similar(self, word: str, top_n: int = 10) -> List[Tuple[str, float]]:
         """
-        Sử dụng phương thức most_similar() của mô hình để tìm N từ tương đồng nhất.
+        Sử dụng phương thức most_similar có sẵn của mô hình để tìm N từ giống nhất.
+        Trả về danh sách các bộ (từ, điểm_tương_đồng).
         """
-        if self.model is None:
-            return None
-            
-        word_lower = word.lower()
-        if word_lower not in self.model:
-            return None
-
         try:
-            # Kết quả là list of (word, similarity) tuples
-            return self.model.most_similar(word_lower, topn=top_n)
+            return self.model.most_similar(word, topn=top_n)
         except KeyError:
-            # Xử lý OOV
-            return None
+            # Xử lý từ OOV
+            print(f"Cảnh báo: Từ '{word}' không có trong từ vựng.")
+            return []
 
-# --------------------------------------------------------------------------------
-# Task 3: Document Embedding được triển khai bên dưới
-# --------------------------------------------------------------------------------
+    # --- Task 3: Document Embedding (Nhúng Tài liệu) ---
 
-    def embed_document(self, document: str) -> Optional[np.ndarray]:
+    def embed_document(self, document: str) -> np.ndarray:
         """
-        Biểu diễn tài liệu bằng cách tính trung bình vector của tất cả các từ trong tài liệu.
+        Tính toán vector tài liệu bằng cách lấy trung bình cộng các vector từ của
+        tất cả các từ đã biết trong tài liệu.
         """
-        if self.model is None:
-            return None
-
-        # 1. Tách văn bản thành tokens (sử dụng Tokenizer từ Lab 1, ở đây là simple_tokenizer)
+        # 1. Tokenize tài liệu
         tokens = simple_tokenizer(document)
 
-        # 2. Lấy vector cho từng token, bỏ qua từ OOV
-        word_vectors = []
+        known_word_vectors = []
         for token in tokens:
-            vector = self.get_vector(token) # get_vector đã xử lý chữ thường và OOV
+            # 2. Lấy vector cho mỗi token. Bỏ qua các từ OOV.
+            vector = self.get_vector(token)
             if vector is not None:
-                word_vectors.append(vector)
-        
-        # 3. Xử lý trường hợp không có từ nào được biết (empty document)
-        if not word_vectors:
-            # Trả về một vector zero với đúng chiều (dimension)
-            # Lấy chiều từ vector của từ bất kỳ, hoặc giả định 50 nếu mô hình đã tải là 50-D
-            if not self.model.vectors.size == 0:
-                vector_dim = self.model.vector_size
-            else:
-                # Nếu mô hình trống (không nên xảy ra), giả định chiều
-                vector_dim = 50 
-            print(f"Cảnh báo: Tài liệu không chứa từ nào có trong từ vựng. Trả về vector zero {vector_dim}-D.")
-            return np.zeros(vector_dim)
+                known_word_vectors.append(vector)
 
-        # 4. Tính trung bình vector (element-wise mean)
-        # np.mean có thể tính trung bình dọc theo trục 0 (trục của các vector)
-        document_vector = np.mean(word_vectors, axis=0)
+        # 3. Nếu tài liệu không chứa từ nào đã biết, trả về vector 0 có đúng chiều kích thước
+        if not known_word_vectors:
+            print("Cảnh báo: Tài liệu không chứa từ nào trong từ vựng của mô hình. Trả về vector 0.")
+            return np.zeros(self.vector_dim)
+
+        # 4. Tính toán trung bình cộng theo từng phần tử (element-wise mean) của tất cả các vector từ
+        # Chuyển danh sách vector thành ma trận NumPy, sau đó tính trung bình theo trục 0 (các hàng)
+        document_matrix = np.stack(known_word_vectors)
+        document_vector = np.mean(document_matrix, axis=0)
 
         return document_vector
-
-
-if __name__ == '__main__':
-    # --- Code thử nghiệm (Evaluation) có thể đặt tại đây hoặc trong file test riêng ---
-    # Tôi sẽ đặt nó trong file test riêng theo yêu cầu.
-    pass

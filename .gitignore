@@ -22,5 +22,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 # Ignore dataset (không push file nặng)
-UD_English-EWT/
 UD_English-EWT.tar.gz
+c4-train.00000-of-01024-30K.json.gz
+data/
