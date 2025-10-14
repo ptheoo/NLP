@@ -27,13 +27,12 @@ Mục tiêu: Thực hiện các thao tác với word embeddings: sử dụng pre
 
 5.3 So sánh: Pretrained vs Trained-from-scratch
 
-5.4 Giảm chiều & trực quan hóa — phương pháp và lời khuyên
+5.4 Giảm chiều & trực quan hóa 
 
 6. Các vấn đề gặp phải & cách giải quyết (Troubleshooting)
 
 7. Đề xuất cải tiến & bước tiếp theo
 
-8. Tài liệu tham khảo & nguồn
 
 ## 1. Tóm tắt tiến độ (Checklist)
 
@@ -55,7 +54,7 @@ Phần 1: Triển khai (50%)
 
  Task 4: Huấn luyện model trên tập dữ liệu lớn (Spark) — Đã chạy demo Spark Word2Vec (kết quả hiển thị).
 
- Task 5: Trực quan hóa embedding bằng PCA/t-SNE — (chưa hoàn thành)
+ Task 5: Trực quan hóa embedding bằng PCA/t-SNE — Hoàn thành
 
 Phần 2: Báo cáo và Phân tích (50%)
 
@@ -140,6 +139,7 @@ python test/lab4_embedding_training_demo.py
 
 Dưới đây là các output đã chạy:
 ### 4.1 Sử dụng GloVe pretrained (lab4_test)
+```bash
 [nltk_data] Downloading package punkt...
 🔹 Đang tải mô hình 'glove-wiki-gigaword-50' ...
  Mô hình 'glove-wiki-gigaword-50' tải thành công (50-dim).
@@ -169,8 +169,9 @@ Vector biểu diễn văn bản:
 [ 0.04564168  0.36530998 -0.55974334  0.04014383  0.09655549  0.15623933
  -0.33622834 -0.12495166 -0.01031508 -0.5006717 ]
 Độ dài vector: 50
-
+```
 ### 4.2 Huấn luyện Word2Vec từ đầu (lab4_embedding_training_demo) — kết quả sample
+```bash
 BẮT ĐẦU: HUẤN LUYỆN MÔ HÌNH WORD2VEC TỪ ĐẦU
 ...
 Tổng số câu được đọc để huấn luyện: 14225
@@ -179,10 +180,10 @@ Word2Vec lifecycle event {... vocab=3866, vector_size=100 ...}
 Huấn luyện mô hình Word2Vec hoàn tất.
 Kích thước từ vựng mô hình (vocab size): 3866
 
-3. Đang lưu mô hình đã huấn luyện tại: .../results/word2vec_ewt.model
+Đang lưu mô hình đã huấn luyện tại: .../results/word2vec_ewt.model
 Lưu mô hình thành công.
 
-4. Demo sử dụng mô hình Word2Vec đã huấn luyện:
+Demo sử dụng mô hình Word2Vec đã huấn luyện:
 
    A. 10 từ tương đồng nhất với 'student':
       1. science: 0.4967
@@ -195,10 +196,11 @@ Lưu mô hình thành công.
       2. foot (Score: 0.3916)
       3. "it (Score: 0.3914)
 
-
+```
 Ghi chú: kết quả analogies sai là do hạn chế tập huấn luyện (xem phần phân tích).
 
 ### 4.3 Spark Word2Vec demo (kết quả)
+```bash
 Khởi tạo SparkSession.
 ...
 ----------
@@ -237,7 +239,7 @@ Tìm các từ tương tự 'computer'
 Hoàn thành huấn luyện Spark Word2Vec
 ...
 
-
+```
 
 ## 5. Phân tích & Nhận xét chi tiết (Phần Quan trọng)
 ### 5.1 Pretrained GloVe — chất lượng & nhận xét
@@ -271,6 +273,7 @@ Thuật toán & siêu tham số: epochs, window, vector_size ảnh hưởng mạ
 Hệ quả: mô hình học được mối quan hệ cục bộ/đồng xuất hiện (co-occurrence) chứ chưa học được quy luật ngữ nghĩa sâu.
 
 ### 5.3 So sánh: Pretrained vs Trained-from-scratch
+```
 Tiêu chí	        |  Pretrained (GloVe)	     |  Trained-from-scratch (EWT)
 ____________________|____________________________|_______________________
 Dữ liệu huấn luyện	|   Rất lớn	                 |   Nhỏ (~17k câu)
@@ -278,6 +281,7 @@ Chất lượng analogies|	Tốt (king→queen)	     |  Kém / noisy
 Phù hợp domain	    |   Chung chung	             |Có thể domain-specific (nếu corpus domain-specific)
 Thời gian	        |  Tải nhanh, không cần train|	Cần thời gian train
 Khi nào dùng	    |   Baseline, nhanh	         |   Khi cần embedding chuyên ngành
+```
 
 Kết luận: Với dữ liệu nhỏ, dùng pretrained để làm baseline; tự huấn luyện chỉ thực sự hiệu quả nếu có corpus đủ lớn hoặc domain-specific.
 
