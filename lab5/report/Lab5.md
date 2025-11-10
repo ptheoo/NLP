@@ -10,7 +10,7 @@ Quá trình triển khai tập trung vào việc xây dựng Pipeline Phân lo�
 
 1. Thu thập và Chuẩn hóa Dữ liệu:
 
-- Tải dữ liệu (từ giả định, Hugging Face, hoặc sentiments.csv).
+- Tải dữ liệu (từ bộ nhớ, Hugging Face, hoặc sentiments.csv).
 
 - Sử dụng hàm của PySpark/Scikit-learn để làm sạch cơ bản (xóa các hàng thiếu nhãn/văn bản) và chuẩn hóa nhãn (ví dụ: chuyển -1/1 thành 0/1).
 
@@ -64,7 +64,7 @@ Lệnh Thực thi: python -m test.lab5_spark_pipeline_nb , ...
 
 ## II. Phân Tích Kết Quả Ban Đầu
 
-Ban đầu với lab5_test, em dùng bộ dữ liệu giả định đơn giản như trong task 1 thì được kết quả này:
+Ban đầu với lab5_test, em dùng bộ dữ liệu đơn giản như trong task 1 thì được kết quả này:
 
 KẾT QUẢ ĐÁNH GIÁ MÔ HÌNH (Dữ liệu Giả định - 10 mẫu)
 
