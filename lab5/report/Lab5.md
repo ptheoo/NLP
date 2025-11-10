@@ -133,3 +133,11 @@ Tầm quan trọng: Trong xử lý văn bản (đặc biệt là dữ liệu m�
 + $\text{GBT}$ cho $\text{Recall}$ rất cao ($0.9509$) nhưng $\text{Precision}$ thấp, cho thấy mô hình quá khớp (overfit) với dữ liệu $\text{TF-IDF}$ thưa thớt, tạo ra quá nhiều False Positives.
 
 + $\text{Word2Vec}$ cho kết quả kém nhất ($0.6212$) vì mô hình nhúng được huấn luyện trên tập dữ liệu nội bộ quá nhỏ không thể học được ngữ nghĩa từ vựng hiệu quả.
+
+## IV. Thách thức và Giải pháp
+
+Thách thức Thiếu Metrics:
+
+- Vấn đề: MulticlassClassificationEvaluator trong PySpark không cung cấp $\text{Precision}$ và $\text{Recall}$ trực tiếp.
+
+- Giải pháp: Tính toán thủ công các chỉ số này bằng cách sử dụng các bộ lọc $\text{PySpark SQL}$ (.filter() hoặc .where()) để xác định các giá trị $\text{TP, FP, FN}$ và áp dụng công thức chuẩn.
