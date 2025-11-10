@@ -110,7 +110,7 @@ Recall: 0.8110
 
 F1_score: 0.7266
 
-### 2. Kết quả các mô hình NLP (Task 1)
+### 2. Kết quả các mô hình NLP (Task 4)
 
 | Kỹ thuật/Cải tiến              | Mô hình            | Accuracy | Precision | Recall  | F1-score |
 |--------------------------------|------------------|---------|-----------|---------|----------|
@@ -119,7 +119,7 @@ F1_score: 0.7266
 | Mô hình Ensemble               | GBTClassifier      | 0.7286 | 0.7117    | 0.9509  | 0.6953 |
 | Word2Vec Embeddings            | Word2Vec + LR     | 0.6637 | 0.6720    | 0.9019  | 0.6212 |
 
-- Phân tích:
+**Phân tích:**
 
 + Cải tiến Hiệu quả nhất: Kỹ thuật giảm số chiều $\text{TF-IDF}$ trong mô hình $\text{LogisticRegression}$ đã mang lại $\mathbf{F1-score}$ cao nhất là $\mathbf{0.7368}$. 
 Khi số lượng chiều quá lớn, các từ rất hiếm (như lỗi chính tả, ID, hoặc ký hiệu không chuẩn) cũng được coi là đặc trưng. Những đặc trưng nhiễu này làm mô hình bị quá khớp (overfit) với tập huấn luyện và không tổng quát hóa tốt. Bằng cách giảm chiều, chúng ta buộc mô hình chỉ tập trung vào các đặc trưng có ảnh hưởng và xuất hiện đủ thường xuyên, từ đó cải thiện $\text{Precision}$ và tăng khả năng tổng quát hóa.
