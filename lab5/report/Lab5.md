@@ -126,7 +126,7 @@ Khi số lượng chiều quá lớn, các từ rất hiếm (như lỗi chính 
 
 Tầm quan trọng: Trong xử lý văn bản (đặc biệt là dữ liệu mạng xã hội như tweets), Làm sạch và Giảm chiều là bước tối quan trọng để chống lại "curse of dimensionality" (lời nguyền chiều dữ liệu) và đảm bảo mô hình học được các quy luật thực tế chứ không phải là nhiễu.
 
-+ Naive Bayes: Hiệu suất thấp hơn $\text{Baseline}$ ($0.6906$ vs $0.7266$) vì mô hình này giả định tính độc lập của các từ, không phù hợp với mối quan hệ ngữ nghĩa trong các tweet tài chính.
++ Naive Bayes: Hiệu suất thấp hơn $\text{Baseline}$ ($0.6906$ vs $0.7266$) vì mô hình này giả định tính độc lập của các từ.
 
 + Word2Vec/GBT: Cả hai mô hình này cho $\text{F1-score}$ thấp hơn $\text{Baseline}$.
 
