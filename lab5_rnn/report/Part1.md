@@ -3,7 +3,7 @@ Source code nằm ở lab5_rnn/part1/lab5_rnn_pytorch_intro.py
 Sau đây là kết quả sau khi chạy file:
 
 
-## 1.--- PHẦN 1: KHÁM PHÁ TENSOR ---
+```bash -- PHẦN 1: KHÁM PHÁ TENSOR ---
 
 [Task 1.1] Tạo Tensor:
 Tensor từ list:
@@ -113,8 +113,11 @@ Tên: linear.bias | Shape: torch.Size([8])
 Tên: output_layer.weight | Shape: torch.Size([2, 8])
 Tên: output_layer.bias | Shape: torch.Size([2])
 
+```
+
 ### **Khi thực hiện tính đạo hàm z theo x (Task 2.1), nếu gọi ```z.backward()``` một lần nữa ngay sau lần gọi đầu tiên trong đoạn code trên, nó sẽ gây ra lỗi:**
 ```RuntimeError: Trying to backward through the graph a second time...```
+
 *Nguyên nhân là do mặc định, PyTorch sẽ giải phóng bộ nhớ đã sử dụng để lưu trữ biểu đồ tính toán (computation graph) ngay sau khi hàm ```.backward()``` được gọi*
 
 *Biểu đồ này là cần thiết để theo dõi các phép toán và tính toán chuỗi đạo hàm ngược. Sau khi tính xong đạo hàm, PyTorch cho rằng bạn đã hoàn thành và dọn dẹp nó để tiết kiệm bộ nhớ (đặc biệt quan trọng trong các mô hình lớn). Khi bạn gọi ```z.backward()``` lần thứ hai, PyTorch không tìm thấy biểu đồ tính toán nữa, do đó không thể thực hiện phép tính đạo hàm ngược và báo lỗi.*
@@ -123,7 +126,7 @@ Tên: output_layer.bias | Shape: torch.Size([2])
 
 
 
-Như vậy, ở part 1, chúng ta đã:
+### Như vậy, ở part 1, chúng ta đã:
 - Biết cách tạo và thao tác với Tensor (một trong những thư viện học sâu mạnh mẽ và phổ biến nhất), hiểu được cơ chế tự động tính đạo hàm, và quan trọng nhất là đã tự tay xây dựng một mô-rạng mạng nơ-ron đơn giản bằng ```nn.Module```. 
 - Các mô hình cũ sẽ gặp vấn đề với thứ tự của từ chính vì thế, chúng ta cần một mô hình có khả năng xử lý các chuỗi và ghi nhớ thông tin qua từng bước. Đó chính là RNNs.
 - Các kiến trúc RNNs phổ biến: LSTM, GRU.
