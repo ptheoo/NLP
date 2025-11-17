@@ -3,7 +3,8 @@ Source code nằm ở lab5_rnn/part1/lab5_rnn_pytorch_intro.py
 Sau đây là kết quả sau khi chạy file:
 
 
-```bash -- PHẦN 1: KHÁM PHÁ TENSOR ---
+```bash 
+-- PHẦN 1: KHÁM PHÁ TENSOR ---
 
 [Task 1.1] Tạo Tensor:
 Tensor từ list:
