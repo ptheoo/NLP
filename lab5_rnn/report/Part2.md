@@ -41,8 +41,16 @@ Ví dụ các câu kiểm tra “khó”:
 
 ---
 
-## 3. Kết luận tổng quát
+## 3. Nhận xét chung về ưu và nhược điểm từng phương pháp
 
-- **Hiệu năng định lượng:** TF-IDF + Logistic Regression ổn định nhất.  
-- **Khả năng xử lý ngữ cảnh/chuỗi:** LSTM (pre-trained embedding) mạnh hơn với câu phủ định/cấu trúc phức tạp.  
-- **Dữ liệu nhỏ:** Scratch LSTM khó hội tụ → cần nhiều dữ liệu hơn hoặc fine-tune pre-trained embedding.
+| Mô hình | Ưu điểm | Nhược điểm |
+|---------|---------|------------|
+| TF-IDF + Logistic Regression | - Đơn giản, nhanh. <br> - F1 macro cao, ổn định trên lớp ít mẫu. | - Không nắm ngữ cảnh dài hoặc phủ định. <br> - Khó mở rộng với dữ liệu phức tạp. |
+| Word2Vec (Avg) + Dense | - Giữ được ngữ nghĩa từ các từ trong câu. <br> - Dự đoán khá ổn với từ khóa. | - Trung bình vector → mất thứ tự từ, khó xử lý phủ định. |
+| Embedding (Pre-trained) + LSTM | - Xử lý chuỗi tốt, nhận diện phủ định, cấu trúc phức tạp. | - Cần nhiều dữ liệu để huấn luyện. <br> - Test F1 macro thấp với tập nhỏ. |
+| Embedding (Scratch) + LSTM | - Có tiềm năng học chuỗi và ngữ cảnh. | - Dữ liệu nhỏ → khó hội tụ, F1 thấp, loss cao. |
+
+**Kết luận:**  
+- Với dữ liệu nhỏ, TF-IDF + Logistic Regression vẫn là lựa chọn baseline mạnh mẽ.  
+- LSTM (đặc biệt embedding pre-trained) thể hiện sức mạnh xử lý chuỗi, nhưng cần **dữ liệu nhiều hơn hoặc fine-tune embedding** để vượt trội.  
+- Word2Vec + Dense là bước trung gian tốt giữa n-gram và LSTM.

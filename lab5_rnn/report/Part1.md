@@ -1,5 +1,5 @@
 # Report Part 1: Tìm hiểu chung về thư viện pytorch và RNNs.
-Source code nằm ở lab5_rnn/part1/lab5_rnn_pytorch_intro.py
+Source code nằm ở ```lab5_rnn/part1/lab5_rnn_pytorch_intro.py```
 Sau đây là kết quả sau khi chạy file:
 
 
