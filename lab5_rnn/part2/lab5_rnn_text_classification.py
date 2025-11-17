@@ -1,7 +1,3 @@
-"""
-lab5_rnn_solution.py — phiên bản tự động trỏ đúng thư mục NLP/data/hwu
-"""
-
 import os
 import tarfile
 import random
@@ -26,27 +22,11 @@ random.seed(SEED)
 np.random.seed(SEED)
 tf.random.set_seed(SEED)
 
-
-# ==========================
-# 1) Giải nén (không cần dùng nữa)
-# ==========================
-def extract_data(tar_path, dest_dir):
-    if not os.path.exists(tar_path):
-        print(f"Không tìm thấy file {tar_path}, bỏ qua giải nén.")
-        return
-    print(f"Đang giải nén {tar_path} ...")
-    with tarfile.open(tar_path, 'r:gz') as tar:
-        tar.extractall(dest_dir)
-    print("Giải nén xong.")
-
-
 # ==========================
 # 2) Load data — chỉnh để trỏ NLP/data/hwu
 # ==========================
 def load_data():
-    """
-    Tự động lấy đúng đường dẫn NLP/data/hwu
-    """
+   
     this_file = os.path.abspath(__file__)
     part2_dir = os.path.dirname(this_file)
     lab5_rnn_dir = os.path.dirname(part2_dir)
@@ -64,8 +44,8 @@ def load_data():
     for split, p in paths.items():
         if not os.path.exists(p):
             raise FileNotFoundError(
-                f"❌ Không tìm thấy file: {p}\n"
-                f"👉 Hãy kiểm tra thư mục: {data_dir}"
+                f"Không tìm thấy file: {p}\n"
+                f"Hãy kiểm tra thư mục: {data_dir}"
             )
         print(f"[OK] Found {split}: {p}")
 
@@ -270,31 +250,35 @@ def main():
     df_train, df_val, df_test = load_data()
     le, y_train, y_val, y_test, _ = encode_labels(df_train, df_val, df_test)
 
-    task1_tfidf_logreg(df_train, df_test, y_train, y_test)
+    clf1 = task1_tfidf_logreg(df_train, df_test, y_train, y_test)
 
     # Task 2
     try:
-        w2v, _ = task2(df_train, df_val, df_test, y_train, y_val, y_test)
+        w2v, model2 = task2(df_train, df_val, df_test, y_train, y_val, y_test)
     except Exception as e:
         print("Task 2 lỗi:", e)
         w2v = None
+        model2 = None
 
     # Task 3
     if w2v is not None:
         try:
-            tokenizer, max_len, _ = task3(df_train, df_val, df_test, y_train, y_val, y_test, w2v)
+            tokenizer, max_len, model3 = task3(df_train, df_val, df_test, y_train, y_val, y_test, w2v)
         except Exception as e:
             print("Task 3 lỗi:", e)
             tokenizer = None
             max_len = 50
+            model3 = None
     else:
         tokenizer = None
         max_len = 50
+        model3 = None
 
     # Task 4
     if tokenizer is not None:
-        task4(tokenizer, max_len, df_train, df_val, df_test, y_train, y_val, y_test)
+        model4 = task4(tokenizer, max_len, df_train, df_val, df_test, y_train, y_val, y_test)
+    else:
+        model4 = None
 
-
-if __name__ == "__main__":
-    main()
+    # Trả về tất cả mô hình + encoder
+    return clf1, model2, w2v, tokenizer, max_len, model3, model4, le
