@@ -1,9 +1,9 @@
-# Tìm hiểu chung về thư viện pytorch
-### Source code nằm ở lab5_rnn/part1/lab5_rnn_pytorch_intro.py
+# Report Part 1: Tìm hiểu chung về thư viện pytorch và RNNs.
+Source code nằm ở lab5_rnn/part1/lab5_rnn_pytorch_intro.py
 Sau đây là kết quả sau khi chạy file:
 
 
---- PHẦN 1: KHÁM PHÁ TENSOR ---
+## 1.--- PHẦN 1: KHÁM PHÁ TENSOR ---
 
 [Task 1.1] Tạo Tensor:
 Tensor từ list:
@@ -71,7 +71,7 @@ Tensor sau khi reshape (16, 1):
         [0.2398]])
 Shape sau khi reshape: torch.Size([16, 1])
 
---- PHẦN 2: TỰ ĐỘNG TÍNH ĐẠO HÀM VỚI AUTOGRAD ---
+## 2.--- PHẦN 2: TỰ ĐỘNG TÍNH ĐẠO HÀM VỚI AUTOGRAD ---
 x: tensor([1.], requires_grad=True)
 y: tensor([3.], grad_fn=<AddBackward0>)
 grad_fn của y: <AddBackward0 object at 0x0000022EBCEDB2E0>
