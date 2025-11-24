@@ -456,7 +456,7 @@ Tổng kết:
 ## 7. Giải thích kết quả
 
 * Mô hình dự đoán đúng thực thể tổ chức “VNU University” (B-ORG, I-ORG). Tuy nhiên, từ “Hanoi” bị dự đoán nhầm thành O thay vì B-LOC.
-* `Hanoi` (hoặc `Ha Noi`) **không xuất hiện trong dữ liệu huấn luyện CoNLL-2003** (dataset là tiếng Anh, tập trung vào những thực thể trong Reuters).
+* `Hanoi` **không xuất hiện trong dữ liệu huấn luyện CoNLL-2003** (dataset là tiếng Anh, tập trung vào những thực thể trong Reuters).
 * Khi một từ mới xuất hiện, nó sẽ được map tới `<UNK>` (embedding giống nhau cho mọi từ lạ), nên mô hình khó suy ra đây là một `LOC` chỉ từ ngữ cảnh.
 * Pattern “located in London/Paris/New York” xuất hiện nhiều, nhưng “located in Hanoi” không có, khiến mô hình dự đoán sai trong ngữ cảnh mới. Điều này cho thấy mô hình không tổng quát tốt với thực thể mới và nhạy với tần suất xuất hiện trong dữ liệu huấn luyện.
 
