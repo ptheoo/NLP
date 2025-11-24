@@ -1,10 +1,5 @@
 # Report part 4: Xây dựng mô hình RNN cho bài toán Nhận dạng Thực thể Tên (NER)
 
-# Lab 5 — Part 4: NER với RNN (Report & Code)
-
-**Tác giả:**
-**Môn:** Xử lý ngôn ngữ tự nhiên — Lab 5
-
 ---
 
 ## Mục lục
@@ -12,18 +7,17 @@
 1. Mục tiêu
 2. Môi trường & thư viện
 3. File & cách chạy
-4. Code (toàn bộ file `part4_rnn_ner.py`)
-5. Giải thích chi tiết từng phần code
+4. Code (toàn bộ file `lab5_rnn_for_ner.py`)
+5. Giải thích từng phần code
 6. Kết quả thực nghiệm
-7. Thảo luận: vì sao một số thực thể (ví dụ: `Hanoi`) bị gán nhãn `O`
-8. Gợi ý cải thiện
-9. Nộp bài
+7. Giải thích kết quả
+8. Tài liệu tham khảo
 
 ---
 
 ## 1. Mục tiêu
 
-Trong phần này chúng ta thực hiện một pipeline đơn giản cho bài toán NER (Named Entity Recognition) sử dụng RNN (ở đây là LSTM):
+Trong phần này chúng ta thực hiện một pipeline đơn giản cho bài toán NER (Named Entity Recognition) sử dụng RNN:
 
 * Tải dataset CoNLL-2003 từ Hugging Face.
 * Tiền xử lý: ánh xạ nhãn số sang chuỗi, xây vocab, chuẩn hóa padding cho câu và nhãn.
@@ -53,19 +47,16 @@ pip install torch datasets seqeval
 
 ## 3. File & cách chạy
 
-File: `part4_rnn_ner.py` (nội dung dưới đây)
-
+File: `lab5_rnn_for_ner.py`
 Chạy:
 
 ```bash
-python -m part4.r
-# hoặc
-python part4_rnn_ner.py
+python -m part4.lab5_rnn_for_ner
 ```
 
 ---
 
-## 4. Code (toàn bộ file `part4_rnn_ner.py`)\n
+## 4. Code \n
 
 ```python
 import torch
@@ -93,14 +84,16 @@ PAD_LABEL_ID = -100
 
 # Xác định thiết bị
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+```
+### Task 1: Tải và Tiền xử lý Dữ liệu
 
-# --- Task 1: Tải và Tiền xử lý Dữ liệu ---
+```python
 
 print("--- Task 1: Tải và Tiền xử lý Dữ liệu ---")
 
 # 1. Tải dữ liệu từ Hugging Face
 print("1. Tải dữ liệu CoNLL 2003...")
-# BỎ trust_remote_code=True theo khuyến nghị của thư viện
+
 dataset = load_dataset("conll2003")
 print("Tải dữ liệu hoàn tất.")
 
@@ -144,8 +137,10 @@ print(f"\nKích thước từ điển (Word Vocabulary): {vocab_size}")
 print(f"Kích thước từ điển nhãn (Tag Vocabulary): {output_size}")
 print(f"Index của {PAD_TOKEN} (dùng cho padding câu): {word_to_ix[PAD_TOKEN]}")
 print(f"ID nhãn padding (dùng cho ignore_index): {PAD_LABEL_ID}")
+```
 
-# --- Task 2: Tạo PyTorch Dataset và DataLoader ---
+### Task 2: Tạo PyTorch Dataset và DataLoader
+```python
 
 print("\n--- Task 2: Tạo PyTorch Dataset và DataLoader ---")
 
@@ -195,9 +190,10 @@ val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, c
 
 print(f"Số lượng batch trong Training DataLoader: {len(train_dataloader)}")
 print(f"Số lượng batch trong Validation DataLoader: {len(val_dataloader)}")
+```
+### Task 3: Xây dựng Mô hình RNN
 
-# --- Task 3: Xây dựng Mô hình RNN ---
-
+```python
 print("\n--- Task 3: Xây dựng Mô hình RNN ---")
 
 class SimpleRNNForTokenClassification(nn.Module):
@@ -239,8 +235,10 @@ print(f"Mô hình được sử dụng: {model.rnn_type}")
 print(model)
 
 model.to(device)
+```
 
-# --- Task 4: Huấn luyện Mô hình ---
+### Task 4: Huấn luyện Mô hình
+```python
 
 print("\n--- Task 4: Huấn luyện Mô hình ---")
 
@@ -279,9 +277,11 @@ for epoch in range(NUM_EPOCHS):
     avg_loss = total_loss / len(train_dataloader)
     end_time = time.time()
     print(f"Epoch {epoch+1}/{NUM_EPOCHS} | Loss: {avg_loss:.4f} | Time: {end_time - start_time:.2f}s")
+```
 
+### Task 5: Đánh giá Mô hình
 
-# --- Task 5: Đánh giá Mô hình ---
+```python
 
 print("\n--- Task 5: Đánh giá Mô hình ---")
 
@@ -349,7 +349,7 @@ def predict_sentence(sentence_str, model, word_to_ix, ix_to_tag, unk_idx, device
     print("\n--- Kết quả dự đoán NER trên câu ví dụ (Tất cả nhãn) ---")
     results = []
     
-    # THAY ĐỔI Ở ĐÂY: Duyệt và in tất cả các cặp (từ, nhãn)
+    
     for word, tag in zip(tokens, predicted_tags):
         results.append((word, tag))
         print(f"| {word:10} | {tag:8} |") # Định dạng bảng cho dễ nhìn
@@ -406,9 +406,9 @@ Tôi sẽ tóm tắt ý chính cho mỗi block trong code để bạn dễ chép
 
 ---
 
-## 6. Kết quả thực nghiệm (kết quả của bạn chạy trên máy)
+## 6. Kết quả thực nghiệm 
 
-Bạn cung cấp kết quả thực thi như sau — tôi chép lại để đưa vào báo cáo:
+Sau đây là kết quả hiển thị:
 
 ```
 --- Task 1: Tải và Tiền xử lý Dữ liệu ---
@@ -448,18 +448,21 @@ Ví dụ dự đoán:
 | in         | O        |
 | Hanoi      | O        |
 ```
-
+Tổng kết:
+- Độ chính xác trên tập validation: 95.02%
+-  Ví dụ dự đoán câu mới:
+    +  Câu: “VNU University is located in Hanoi”
+    Dự đoán: [('VNU',B-ORG), ('University',I-ORG),('is',O),('located',O),("in",O),("Hanoi",O)]
 ---
 
-## 7. Thảo luận: vì sao `Hanoi` bị gán nhãn `O`?
+## 7. Giải thích kết quả
 
-Ngắn gọn (như bạn đã quan sát trước đó):
-
+* Mô hình dự đoán đúng thực thể tổ chức “VNU University” (B-ORG, I-ORG). Tuy nhiên, từ “Hanoi” bị dự đoán nhầm thành O thay vì B-LOC.
 * `Hanoi` (hoặc `Ha Noi`) **không xuất hiện trong dữ liệu huấn luyện CoNLL-2003** (dataset là tiếng Anh, tập trung vào những thực thể trong Reuters).
 * Khi một từ mới xuất hiện, nó sẽ được map tới `<UNK>` (embedding giống nhau cho mọi từ lạ), nên mô hình khó suy ra đây là một `LOC` chỉ từ ngữ cảnh.
-* Mô hình của bạn là LSTM từ đầu (không dùng pretrained embedding hay transformer) → khả năng tổng quát hoá cho từ ngoài phân phối huấn luyện kém.
+* Pattern “located in London/Paris/New York” xuất hiện nhiều, nhưng “located in Hanoi” không có, khiến mô hình dự đoán sai trong ngữ cảnh mới. Điều này cho thấy mô hình không tổng quát tốt với thực thể mới và nhạy với tần suất xuất hiện trong dữ liệu huấn luyện.
 
-Vì vậy kết luận: **kết quả là hợp lý theo kỳ vọng**, không phải bug.
+
 
 ---
 
@@ -473,15 +476,6 @@ Vì vậy kết luận: **kết quả là hợp lý theo kỳ vọng**, không p
 
 ---
 
-## 9. Nộp bài
-
-* Nộp file markdown này (`lab5_rnn_part4_report.md`) kèm code `part4_rnn_ner.py` lên hệ thống bài tập.
-* Ghi rõ kết quả validation accuracy cuối cùng: **95.02%** (theo kết quả bạn đã chạy).
 
 ---
 
-### Ghi chú cuối
-
-Nếu bạn muốn mình chuyển file này thành 1 file `.md`/`.pdf` để tải về trực tiếp, mình có thể tạo file đó (hoặc hướng dẫn cách xuất). Nếu muốn mình thêm phần phân tích sâu hơn (confusion matrix theo tag, ví dụ nhiều trường hợp sai), nói cụ thể nhé.
-
-Chúc bạn nộp bài suôn sẻ!
