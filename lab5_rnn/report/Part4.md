@@ -11,7 +11,7 @@
 5. Giải thích từng phần code
 6. Kết quả thực nghiệm
 7. Giải thích kết quả
-8. Tài liệu tham khảo
+8. Gợi ý cải thiện
 
 ---
 
@@ -56,7 +56,7 @@ python -m part4.lab5_rnn_for_ner
 
 ---
 
-## 4. Code \n
+## 4. Code
 
 ```python
 import torch
@@ -372,8 +372,6 @@ predict_sentence(
 
 ## 5. Giải thích chi tiết từng phần code
 
-Tôi sẽ tóm tắt ý chính cho mỗi block trong code để bạn dễ chép vào báo cáo.
-
 ### Task 1 — Tải và tiền xử lý
 
 * `load_dataset("conll2003")` tải tập CoNLL-2003.
@@ -476,6 +474,4 @@ Tổng kết:
 
 ---
 
-
----
 
