@@ -22,6 +22,8 @@ Project này là tập hợp các bài tập và báo cáo **Thực hành (Lab)*
 ## 2. Cấu trúc
 
 Cấu trúc dự án được phân chia theo từng Bài Lab, giúp dễ dàng theo dõi tiến trình học tập và kiểm tra kết quả của từng nhiệm vụ cụ thể.
+```
+.
 ├── data/                      #  Dữ liệu gốc và đã xử lý (chung)
 ├── lab1_2/                    #  Thực hành Lab 1 & 2 (NLP Cơ bản)
 ├── lab3/                      # Thực hành Lab 3
@@ -32,7 +34,7 @@ Cấu trúc dự án được phân chia theo từng Bài Lab, giúp dễ dàng 
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-
+```
 ---
 
 ## 3. Hướng dẫn Cài đặt & Sử dụng
